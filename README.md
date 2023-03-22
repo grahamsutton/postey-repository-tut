@@ -1,6 +1,6 @@
 # Postey (Repository Pattern Tutorial)
 
-This is an actual working version of how I implement as simple repository pattern based on my blog article [Implement the Repository Pattern in PHP](https://grahamsutton.dev/implement-the-repository-pattern-in-php/).
+This is an actual working version of how I implement a simple repository pattern based on my blog article [Implement the Repository Pattern in PHP](https://grahamsutton.dev/implement-the-repository-pattern-in-php/).
 
 ## Try It Yourself
 
@@ -29,6 +29,8 @@ And then finally, you can run the `php postey` command to try out all of the rep
 ```sh
 $ php postey
 ```
+
+Play around and make modifications as you like. Try it out!
 
 ## Testing
 
