@@ -1,0 +1,18 @@
+{
+    "name": "grahamsutton/postey",
+    "description": "An example application to demonstrate a simple working implementation of the repository pattern.",
+    "autoload": {
+        "psr-4": {
+            "Postey\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Graham Sutton",
+            "email": "grahamsutton2@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    }
+}

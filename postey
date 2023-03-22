@@ -1,0 +1,113 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Postey\Domain\Post;
+use Postey\Infra\PostgresPostsRepository;
+
+// ----------------------------------------------------------
+// Instantiate a PostgreSQL implementation of PostsRepository
+// ----------------------------------------------------------
+
+$host = 'postgres';
+$dbname = 'postey_db';
+$user = 'postey';
+$pass = 'postey';
+
+$db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $pass, [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+]);
+
+$postsRepo = new PostgresPostsRepository($db);
+
+
+// ----------------------------------------------------------
+// Fetch all posts
+// ----------------------------------------------------------
+
+echo PHP_EOL;
+echo '=================================' . PHP_EOL;
+echo 'Method: `all`' . PHP_EOL;
+echo '=================================' . PHP_EOL;
+
+$posts = $postsRepo->all();
+
+foreach ($posts as $post) {
+    print_r($post);
+}
+
+
+// ----------------------------------------------------------
+// Find a specific post
+// ----------------------------------------------------------
+
+echo PHP_EOL;
+echo '=================================' . PHP_EOL;
+echo 'Method: `find`' . PHP_EOL;
+echo '=================================' . PHP_EOL;
+
+$post = $postsRepo->find(1);
+
+print_r($post);
+
+
+// ----------------------------------------------------------
+// Create a new post
+// ----------------------------------------------------------
+
+echo PHP_EOL;
+echo '=================================' . PHP_EOL;
+echo 'Method: `save` (Create)' . PHP_EOL;
+echo '=================================' . PHP_EOL;
+
+$postId = $postsRepo->nextIdentity();
+
+$post = new Post(
+    $postId,
+    "This is Post #{$postId}",
+    'This is just another one of my posts.'
+);
+
+$post = $postsRepo->save($post);
+
+print_r($post);
+
+
+// ----------------------------------------------------------
+// Update an existing post
+// ----------------------------------------------------------
+
+echo PHP_EOL;
+echo '=================================' . PHP_EOL;
+echo 'Method: `save` (Update)' . PHP_EOL;
+echo '=================================' . PHP_EOL;
+
+$post = $postsRepo->find($postId);
+
+$updatedPost = new Post(
+    $post->getId(),
+    "Updated Post #{$postId}",
+    $post->getBody()
+);
+
+$post = $postsRepo->save($updatedPost);
+
+print_r($post);
+
+
+// ----------------------------------------------------------
+// Delete an existing post
+// ----------------------------------------------------------
+
+echo PHP_EOL;
+echo '=================================' . PHP_EOL;
+echo 'Method: `delete`' . PHP_EOL;
+echo '=================================' . PHP_EOL;
+
+$postsRepo->delete($postId);
+
+print_r($postsRepo->find($postId) ?? "Post #{$postId} was deleted.");
+
+echo PHP_EOL . PHP_EOL;

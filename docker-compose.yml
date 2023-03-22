@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - app
+  
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postey
+      POSTGRES_PASSWORD: postey
+      POSTGRES_DB: postey_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - app
+
+volumes:
+  pgdata:
+
+networks:
+  app:
